@@ -1,5 +1,8 @@
 # goodnotes2pdf
 
+NOTE: This github repo was 100% vibe coded so it may have issues. I tested it on my course notes which are primarly handwritten and it seems to capture this correctly. This includes Goodnote pages with backgrounds, embedded images, and imported pdf files / slides with added annotations. Beyond that it likely will miss things. It is much faster and produces smaller files than the native Goodreads conversion and handles the entire subfolder system automatically :)
+
+
 Convert GoodNotes notebooks (`.goodnotes` files) to PDF on Windows, macOS or Linux, without the GoodNotes app.
 
 The GoodNotes Windows app exports slowly and often fails on large notebooks, because it turns every page into one large image. goodnotes2pdf reads the `.goodnotes` file directly and draws your handwriting as vector lines. The resulting PDFs stay sharp at any zoom, are often smaller than GoodNotes' own export, and convert quickly: a 343-page notebook takes about 30 seconds.
@@ -47,8 +50,6 @@ python goodnotes2pdf.py convert "C:\Notes\CFD.goodnotes" "C:\NotesPDF"
 ```
 
 If you prefer not to use the command line, double-click `goodnotes2pdf.py` or run it with no arguments. Two folder pickers appear, one for your notebooks and one for the PDFs.
-
-The first line of output shows the version, for example `goodnotes2pdf 0.11 (...)`. Include it if you report a problem.
 
 ## Options for `convert`
 
@@ -107,16 +108,3 @@ If a notebook uses any of these, the rest of the page still converts. Only that 
 A `.goodnotes` file is a ZIP archive. Pages live in `notes/` as streams of Protocol Buffers records: pen strokes, shapes, fills and images. Stroke geometry inside these records is stored compressed with Apple's LZ4 format. The notebook's structure, meaning page order, paper templates, page moves, deletions and outlines, is recorded as a log of events in `index.events.pb`. Paper templates, imported PDFs and images are stored in `attachments/`, and `index.attachments.pb` maps attachment IDs to file names. Coordinates are in 1/132-inch units, which the converter scales to PDF points (1/72 inch).
 
 None of this is publicly documented. The format was worked out by comparing real notebooks against GoodNotes' own exports, so a future GoodNotes update could change it.
-
-## Version history
-
-| Version | Changes |
-|---|---|
-| 0.11 | Filled shapes, curved shapes, very long strokes, strokes stored as filled outlines, outlines from imported PDFs. |
-| 0.10 | Multi-page imported PDFs (each page shows the right slide); moved pages. |
-| 0.9.1 | Overlapping images stacked in GoodNotes' order. |
-| 0.9 | Imported PDF pages whose attachment ID differs from the file name. |
-| 0.8 | GoodNotes outlines become PDF bookmarks. |
-| 0.7 | Deleted pages skipped; embedded images (JPEG 2000) drawn. |
-| 0.6 | Page order, paper templates, shapes, lasso moves. |
-| earlier | Ink decoding, colours, highlighter. |
